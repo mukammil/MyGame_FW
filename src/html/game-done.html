@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>jQuery Meetup Game</title>
+	<link rel="stylesheet" href="game.css"/>
+	<script src="../js/jquery.js"></script>
+	<script src="game.js"></script>
+	<script src="Collision.js"></script>
+	<script src="support.js"></script>
+	<script>
+		$(function(){
+			var score = 0, life = 100;
+			/*Can be Modified to update the Score;
+			  Change the name to Score || Stats;
+			  Advanced for modifying power stats;
+			*/
+			$("#game").delegate(".user", "escape", function(){
+				$(this).remove();
+				score += 10;
+				$("#score").text( score );
+			});	
+			/*	Try to Reduce the Length by Changing the Logic
+				Dont hardcode the width & height of the object while sending to Collision Method
+				Try to Change the Collision Function
+			*/
+			$("#game").delegate(".user", "collision", function(){	
+					var pos = $(this).position();
+					var flightPos = $("#flight").position();
+					var bombPos = $('#game').find("#bomb");
+					var bomb1Pos = $('#game').find("#bomb1");
+					if( +pos.left < 0){
+						$(this).remove();
+						score += 10;
+						$("#score").text( score );
+					}
+					else{
+					for(var i =0; i<bombPos.length;i++){
+						var bombPoss = bombPos.position();
+						if(collision(bombPoss.left,bombPoss.top,+bombPoss.left+32,+bombPoss.top+32,pos.left,pos.top,+pos.left+32,+pos.top+32)){
+							$(this).remove();
+							$(bombPos[i]).remove();
+							score += 100;
+							$("#score").text( score );
+						}
+					}
+					for(var i =0; i<bomb1Pos.length;i++){
+						var bomb1Poss = bomb1Pos.position();
+						if(collision(bomb1Poss.left,bomb1Poss.top,+bomb1Poss.left+25,+bomb1Poss.top+25,pos.left,pos.top,+pos.left+32,+pos.top+32)){
+							$(this).remove();
+							score += 100;
+							$("#score").text( score );
+						}
+					}
+					if(collision(flightPos.left,flightPos.top,+flightPos.left+62,+flightPos.top+62,pos.left,pos.top,+pos.left+32,+pos.top+32)){
+						$("#game").trigger("stop");
+					}
+					}
+			});		
+			$("#game").bind("start", function(){
+				score = 0;
+				life = 100;
+				$("#score").text( score );
+				$("#life").text( life );
+				
+				$("input").hide();
+				
+				$("b.kill").fadeOut(1000, function(){
+					$(this).remove();
+				});
+			});
+			$("#game").bind("stop", function(){
+				$("input").show();
+			});
+			$("input").click(function(){
+				$("#game").trigger("start");
+			});
+			$(document).keydown(function(event) {
+			var e = event ||window.event,k = e.keyCode;
+			if((!paused)?true:(k == 80?true:false) ){
+			switch (k) {
+				case 38:up();break; // up
+				case 40:down();break; // down
+				case 37:left();break; // left
+				case 39:right();break; // right
+				case 32:space();break; // space
+				case 80:pause();break; // p
+				case 81:bomber();break; // b
+				case 82:doublebomber();break; // v
+				default:break;
+				}
+			}
+			});
+		});
+		</script>
+</head>
+<body>
+	<p id="stats">
+	<input type="button" value="Start"/> 
+	Score: <strong id="score">$</strong>
+	Bombs: <strong id="bombs">10</strong>
+	Level: <strong id="level">$</strong>
+	Speed: <strong id="speed">$</strong>
+	Powers:<strong id="powers"> Double Bombs [V], Speed Up , Slow Down , In a Row , Bomber[B]</strong>
+	</p>
+	<div id="a"><div id="game"></div></div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+#game {
+	width: 600px;
+	height: 400px;
+	position: relative;
+	overflow: hidden;
+	background :url("starfield.jpg") no-repeat left -1px;
+}
+
+.user {
+	/*width: 20px;
+	height: 20px;
+	border: 2px solid green;
+	-moz-transform:   rotate(-180deg);
+  	-webkit-transform:  rotate(-180deg);*/
+	position: absolute;
+	top: 0px;
+	left: 600px;
+}
+#flight{
+	position: absolute;
+	background :url("ship_center.png") no-repeat;
+	display:block;
+	width:64px;
+	height:64px;
+}
+#bomb{
+	position: absolute;
+	background :url("bomb.png") no-repeat;
+	display:block;
+	width:32px;
+	height:32px;
+	-moz-transform: rotate(45deg);
+  	-webkit-transform: rotate(45deg);
+}
+#bomb1{
+	position: absolute;
+	background :url("red.gif") no-repeat;
+	display:block;
+	width:25px;
+	height:25px;
+	-moz-transform: rotate(135deg);
+  	-webkit-transform: rotate(135deg);
+}
+.user.hit {
+	border: 2px solid red;
+}
+.user img {
+	/*width: 100%;
+	height: 100%;*/
+}
+.user.lg {
+	/*width: 150px;
+	height: 150px;*/
+}
